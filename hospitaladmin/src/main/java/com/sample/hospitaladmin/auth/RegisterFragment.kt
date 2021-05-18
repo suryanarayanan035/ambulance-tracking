@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import com.sample.common.isMobile
+import com.sample.common.isName
+import com.sample.common.isPassword
 import com.sample.hospitaladmin.R
 import com.sample.hospitaladmin.databinding.FragmentRegisterBinding
 
@@ -27,14 +30,18 @@ class RegisterFragment : Fragment() {
             val password = binding.registerPasswordInput.text.toString().trim()
             val name = binding.registerNameInput.text.toString().trim()
 
-            val bottomNavView = requireActivity().findViewById<View>(R.id.authOptionsBottomNav)
-            Snackbar.make(
-                bottomNavView,
-                "$phoneNumber $password $name", Snackbar.LENGTH_LONG,
-            ).apply {
-                anchorView = bottomNavView
-                setAction("Dismiss") { }
-            }.show()
+            if (!phoneNumber.isMobile() || !password.isPassword() || !name.isName()) {
+                val bottomNavView = requireActivity().findViewById<View>(R.id.authOptionsBottomNav)
+                Snackbar.make(
+                    bottomNavView,
+                    "PhoneNumber/Password/Name is not valid", Snackbar.LENGTH_LONG,
+                ).apply {
+                    anchorView = bottomNavView
+                    setAction("Dismiss") { }
+                }.show()
+                return@setOnClickListener
+            }
+            // Check
         }
     }
 

@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.sample.ambulancetracking.R
 import com.sample.ambulancetracking.databinding.FragmentLoginBinding
+import com.sample.common.isMobile
+import com.sample.common.isPassword
 
 class LoginFragment : Fragment() {
 
@@ -26,14 +29,18 @@ class LoginFragment : Fragment() {
             val phoneNumber = binding.loginPhoneNumberInput.text.toString().trim()
             val password = binding.loginPasswordInput.text.toString().trim()
 
-            val bottomNavView = requireActivity().findViewById<View>(R.id.authOptionsBottomNav)
-            Snackbar.make(
-                bottomNavView,
-                "$phoneNumber $password", Snackbar.LENGTH_LONG,
-            ).apply {
-                anchorView = bottomNavView
-                setAction("Dismiss") { }
-            }.show()
+            if (!phoneNumber.isMobile() || !password.isPassword()) {
+                val bottomNavView = requireActivity().findViewById<View>(R.id.authOptionsBottomNav)
+                Snackbar.make(
+                    bottomNavView,
+                    "PhoneNumber or Password is not valid", Snackbar.LENGTH_LONG,
+                ).apply {
+                    anchorView = bottomNavView
+                    setAction("Dismiss") { }
+                }.show()
+                return@setOnClickListener
+            }
+            // Check
         }
     }
 

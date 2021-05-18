@@ -1,3 +1,4 @@
 rootProject.name = "Ambulance Tracking"
 include ':app'
 include ':hospitaladmin'
+include ':common'
