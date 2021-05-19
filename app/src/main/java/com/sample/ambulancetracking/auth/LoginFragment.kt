@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
@@ -20,9 +21,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginFragment : Fragment() {
 
-    private val retrofit =
-        Retrofit.Builder().baseUrl("https://ec2-65-1-134-41.ap-south-1.compute.amazonaws.com:10000")
-            .addConverterFactory(GsonConverterFactory.create()).build()
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("http://ec2-65-1-134-41.ap-south-1.compute.amazonaws.com:10000")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
     private val ambulanceService = retrofit.create(AmbulanceService::class.java)
 
     override fun onCreateView(
@@ -55,16 +57,16 @@ class LoginFragment : Fragment() {
             activity?.lifecycleScope?.launch(Dispatchers.IO) {
                 try {
                     val response = ambulanceService.check(phoneNumber)
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Snackbar.make(
-                            bottomNavView,
-                            e.message ?: "", Snackbar.LENGTH_LONG,
-                        ).apply {
-                            anchorView = bottomNavView
-                            setAction("Dismiss") { }
-                        }.show()
-                    }
+                } catch(e: Exception) {
+                   withContext(Dispatchers.Main) {
+                       Snackbar.make(
+                           bottomNavView,
+                           e.message?: "", Snackbar.LENGTH_LONG,
+                       ).apply {
+                           anchorView = bottomNavView
+                           setAction("Dismiss") { }
+                       }.show()
+                   }
                 }
             }
         }
