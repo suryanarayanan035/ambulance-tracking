@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginFragment : Fragment() {
 
-    private val retrofit = Retrofit.Builder().baseUrl("").addConverterFactory(GsonConverterFactory.create()).build()
+    private val retrofit = Retrofit.Builder().baseUrl("http://ec2-65-1-134-41.ap-south-1.compute.amazonaws.com:10000").addConverterFactory(GsonConverterFactory.create()).build()
     private val ambulanceService = retrofit.create(AmbulanceService::class.java)
 
     override fun onCreateView(
