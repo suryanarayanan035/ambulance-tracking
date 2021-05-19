@@ -10,7 +10,7 @@ interface AmbulanceService {
 //    @POST("/user")
 //    suspend fun signUp(@Body payload: RegisterRequest): Response
 
-    @GET("/user/{userId}")
+    @GET("user/{userId}")
     suspend fun check(@Path("userId") userId: String): CheckResponse
 //
 //    @POST("/user/login")
