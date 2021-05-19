@@ -1,5 +1,6 @@
 package com.sample.ambulancetracking.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ class HospitalListAdapter : RecyclerView.Adapter<HospitalListAdapter.HospitalVie
         return HospitalViewHolder(LayoutHospitalItemBinding.inflate(adapterLayout, parent, false))
     }
 
+    @SuppressLint("SetTextI18n")
     @ExperimentalStdlibApi
     override fun onBindViewHolder(holder: HospitalViewHolder, position: Int) {
         val hospital = hospitals[position]

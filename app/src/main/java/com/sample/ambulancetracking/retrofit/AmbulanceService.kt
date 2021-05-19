@@ -6,13 +6,16 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface AmbulanceService {
-//
-//    @POST("/user")
-//    suspend fun signUp(@Body payload: RegisterRequest): Response
+
+    @POST("user")
+    suspend fun signUp(@Body payload: RegisterPayload): ActionResponse
 
     @GET("user/{userId}")
     suspend fun check(@Path("userId") userId: String): CheckResponse
-//
-//    @POST("/user/login")
-//    suspend fun login(@Body payload: LoginRequest): Response
+
+    @POST("user/login")
+    suspend fun login(@Body payload: LoginPayload): ActionResponse
+
+    @POST("ambulance/nearby-ambulances")
+    suspend fun searchAmbulances(@Body payload: SearchPayload): SearchResponse
 }

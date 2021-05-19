@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Ambulance Tracking</string>
+    <string name="prefs_key">com.sample.ambulancetracking.secret</string>
     <string name="phone_number_hint">Enter your phone number</string>
     <string name="password_hint">Enter the password</string>
     <string name="login_text">Login</string>

@@ -2,7 +2,9 @@ package com.sample.ambulancetracking.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -29,6 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sample.ambulancetracking.BuildConfig
 import com.sample.ambulancetracking.R
 import com.sample.ambulancetracking.databinding.ActivityHomeBinding
+import com.sample.common.USERID_PREFS
 
 
 class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -36,6 +39,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityHomeBinding
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var sharedPref: SharedPreferences
     private val permissionAccepted: Boolean
         get() = checkSelfPermission(
             this,
@@ -67,6 +71,19 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPref = getSharedPreferences(
+            getString(R.string.prefs_key),
+            Context.MODE_PRIVATE
+        )
+
+        val userId = sharedPref.getString(USERID_PREFS, "")
+        if (!userId.isNullOrBlank()) {
+            val homeIntent = Intent(this, HomeActivity::class.java)
+            startActivity(homeIntent)
+            finish()
+            return
+        }
 
         binding.searchButton.isEnabled = currentLocationAdded
         locationManager = getSystemService(this, LocationManager::class.java)
@@ -127,7 +144,12 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
         } else {
-            requestLocationUpdates()
+            if (!locationEnabled) {
+                Snackbar.make(binding.root, "Location is not enabled", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Enable") {
+                        startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                    }.show()
+            }
         }
 
         val mapFragment = supportFragmentManager
@@ -211,11 +233,25 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
+        val userId = sharedPref.getString(USERID_PREFS, "")
+        if (!userId.isNullOrBlank()) {
+            val homeIntent = Intent(this, HomeActivity::class.java)
+            startActivity(homeIntent)
+            finish()
+            return
+        }
         if (!locationEnabled) {
             Snackbar.make(binding.root, "Location is not enabled", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Enable") {
                     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }.show()
+        }
+        if (!permissionAccepted) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            )
         }
         requestLocationUpdates()
     }
