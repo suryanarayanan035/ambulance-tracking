@@ -3,8 +3,11 @@ package com.sample.hospitaladmin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.sample.hospitaladmin.auth.AuthActivity
 import com.sample.hospitaladmin.databinding.ActivityMainBinding
+import com.sample.hospitaladmin.home.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -13,9 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.navigateToAuthBtn.setOnClickListener {
-            val authIntent = Intent(this, AuthActivity::class.java)
-            startActivity(authIntent)
-        }
+
+        val selectionScreenIntent = Intent(this,ListPendingRequestsHospital::class.java)
+        startActivity(selectionScreenIntent)
     }
 }

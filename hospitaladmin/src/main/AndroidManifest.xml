@@ -2,14 +2,44 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sample.hospitaladmin">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AmbulanceTracking">
-        <activity android:name=".auth.ChooseActivity"></activity>
+        android:theme="@style/Theme.AmbulanceTracking"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".home.ListPendingRequestsHospital"></activity>
+        <activity android:name=".home.HospitalLogin" />
+        <activity android:name=".home.SelectionScreen" />
+        <activity android:name=".home.AmbulaceLogin" />
+        <activity android:name=".home.Ambulance_Home" />
+        <activity android:name=".home.AmbulanceSignup" />
+        <activity android:name=".home.RequestDetailsActivity" />
+        <activity android:name=".home.HomeActivity" />
+
+        <meta-data
+            android:name="com.here.sdk.access_key_id"
+            android:value="cKk9huU1suu1Q1lXibX5YA" />
+        <meta-data
+            android:name="com.here.sdk.access_key_secret"
+            android:value="8XwWtnZG5RmSJhBEOjQ4FxCETzYrOX1Hp6_OQRX-Y45V-UodvNue_Y5q84Z1NrT3ONlcm7dWeHuuJl6ULzwxsw" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name=".home.SignupLocationDetails" />
+        <activity android:name=".home.LocationActivity" />
+        <activity android:name=".home.SignupActivity" />
+        <activity android:name=".home.CheckHospitalActivity" />
+        <activity android:name=".auth.ChooseActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".journey.JourneyActivity" />
         <activity android:name=".auth.AuthActivity" />

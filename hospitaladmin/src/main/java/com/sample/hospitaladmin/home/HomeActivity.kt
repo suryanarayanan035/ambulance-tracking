@@ -1,4 +1,4 @@
-package com.sample.ambulancetracking.home
+package com.sample.hospitaladmin.home
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,7 +18,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.commit
 import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -28,10 +30,10 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
-import com.sample.ambulancetracking.BuildConfig
-import com.sample.ambulancetracking.R
-import com.sample.ambulancetracking.databinding.ActivityHomeBinding
+import com.sample.hospitaladmin.BuildConfig
 import com.sample.common.USERID_PREFS
+import com.sample.hospitaladmin.R
+import com.sample.hospitaladmin.databinding.ActivityHomeBinding
 
 
 class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -85,7 +87,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        binding.searchButton.isEnabled = currentLocationAdded
+
         locationManager = getSystemService(this, LocationManager::class.java)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -101,42 +103,9 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        binding.searchBody.hospitalRv.adapter = HospitalListAdapter()
 
-        binding.buttonLayout.visibility = View.VISIBLE
-        binding.searchLayout.visibility = View.INVISIBLE
-        sheetBehavior = BottomSheetBehavior.from(binding.bottomSheetLayout)
-        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-            }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                val doubleOffset = slideOffset * 4
-                if (doubleOffset > 1) {
-//                    binding.currentLocationFab.visibility = View.GONE
-                    binding.buttonLayout.visibility = View.INVISIBLE
-                    binding.searchLayout.visibility = View.VISIBLE
-                    binding.buttonLayout.alpha = 0f
-                    binding.searchLayout.alpha = 1f
-                } else {
-//                    binding.currentLocationFab.visibility = View.VISIBLE
-//                    binding.currentLocationFab.alpha = 1 - doubleOffset
-                    binding.buttonLayout.visibility = View.VISIBLE
-                    binding.searchLayout.visibility = View.VISIBLE
-                    binding.buttonLayout.alpha = 1 - doubleOffset
-                    binding.searchLayout.alpha = doubleOffset
-                }
-                when {
-                    slideOffset < 0.05 -> {
-                        binding.buttonLayout.visibility = View.VISIBLE
-                        binding.searchLayout.visibility = View.INVISIBLE
-                    }
-                }
-            }
-        })
-        binding.searchButton.setOnClickListener {
-            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
+
         if (!permissionAccepted) {
             ActivityCompat.requestPermissions(
                 this,
@@ -152,9 +121,15 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        var mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as? SupportMapFragment
+        if(mapFragment == null) {
+            mapFragment=SupportMapFragment.newInstance()
+            supportFragmentManager.commit {
+                replace(R.id.map,mapFragment)
+            }
+        }
+        mapFragment?.getMapAsync(this)
 
     }
 
@@ -163,7 +138,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         val userLatLng = LatLng(location.latitude, location.longitude)
         currentLocationMarker = map.addMarker(MarkerOptions().position(userLatLng))
         map.moveCamera(CameraUpdateFactory.newLatLng(userLatLng))
-        binding.searchButton.isEnabled = currentLocationAdded
+
     }
 
     @SuppressLint("MissingPermission")
@@ -263,7 +238,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-//        map.addMarker()
     }
 
 }

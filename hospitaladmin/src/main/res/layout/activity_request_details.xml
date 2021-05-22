@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/linearLayout"
+
+    tools:context=".home.RequestDetailsActivity">
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/requestDetailsMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        >
+
+
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:text="Name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bloodGroupLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="69dp"
+            android:layout_marginTop="40dp"
+            android:text="BloodGroup"
+            app:layout_constraintStart_toEndOf="@+id/nameValue"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ageLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:text="Age"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
+
+        <TextView
+            android:id="@+id/genderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="69dp"
+            android:layout_marginTop="26dp"
+            android:text="Gender"
+            app:layout_constraintStart_toEndOf="@+id/ageValue"
+            app:layout_constraintTop_toBottomOf="@+id/bloodGroupLabel" />
+
+        <TextView
+            android:id="@+id/accidentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="27dp"
+            android:text="Accident"
+            app:layout_constraintStart_toEndOf="@+id/mobileValue"
+            app:layout_constraintTop_toBottomOf="@+id/genderLabel" />
+
+        <TextView
+            android:id="@+id/mobileLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="26dp"
+            android:text="Mobile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ageLabel" />
+
+        <Button
+            android:id="@+id/rejectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="111dp"
+            android:text="Reject"
+            app:layout_constraintStart_toEndOf="@+id/acceptButton"
+            app:layout_constraintTop_toBottomOf="@+id/driverMobileText" />
+
+        <Button
+            android:id="@+id/acceptButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="89dp"
+            android:layout_marginTop="156dp"
+            android:text="Accept"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mobileValue" />
+
+        <TextView
+            android:id="@+id/nameValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="40dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/nameLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ageValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="26dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/ageLabel"
+            app:layout_constraintTop_toBottomOf="@+id/nameValue" />
+
+        <TextView
+            android:id="@+id/mobileValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="27dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/mobileLabel"
+            app:layout_constraintTop_toBottomOf="@+id/ageValue" />
+
+        <TextView
+            android:id="@+id/bloodGroupValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginTop="40dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/bloodGroupLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/genderValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="26dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/genderLabel"
+            app:layout_constraintTop_toBottomOf="@+id/bloodGroupLabel" />
+
+        <TextView
+            android:id="@+id/accidentValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="28dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/accidentLabel"
+            app:layout_constraintTop_toBottomOf="@+id/genderValue" />
+
+        <TextView
+            android:id="@+id/driverNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="17dp"
+            android:text="Driver"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mobileLabel" />
+
+        <TextView
+            android:id="@+id/driverMobileText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="135dp"
+            android:layout_marginTop="21dp"
+            android:text="Driver Mobile"
+            app:layout_constraintStart_toEndOf="@+id/driverNameLabel"
+            app:layout_constraintTop_toBottomOf="@+id/accidentValue" />
+
+        <TextView
+            android:id="@+id/driverNameValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="170dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/driverNameLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/driverMobileValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="21dp"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/driverMobileText"
+            app:layout_constraintTop_toBottomOf="@+id/accidentValue" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

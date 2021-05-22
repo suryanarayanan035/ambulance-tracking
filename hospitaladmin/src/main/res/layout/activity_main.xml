@@ -11,7 +11,7 @@
         android:id="@+id/navigateToAuthBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Navigate to Auth Page" />
+        android:text="Navigate to Check Page" />
 
     <Button
         android:id="@+id/navigateToJourneyBtn"
