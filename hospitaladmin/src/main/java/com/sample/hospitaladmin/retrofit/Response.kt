@@ -66,9 +66,49 @@ data class RequestDetailsResponse (
     var name:String,
     var age:Int,
     var gender:String,
-    var bloodgroup:String,
+    var bloodGroup:String,
     var isAccident:Boolean,
     var driverName:String,
-    var driverMobile:String
+    var driverMobile:String,
+    val requestedBy:String,
+    var location:LocationClass
 
         )
+data class UpdateRequestDetails (
+    var requestId:String,
+    var requestStatus:String,
+)
+data class UpdateRequestDetailsPayload (
+  var requestDetails:UpdateRequestDetails
+        )
+
+data class UpdateRequestDetailsResponse (
+    var hasError:Boolean,
+        )
+
+data class UpdateJourneyDetailsPayload (
+    var journeyDetails:UpdateJourneyDetails
+)
+
+data class UpdateJourneyDetailsResponse (
+    var hasError:Boolean,
+)
+
+
+data class UpdateJourneyDetails(
+    var requestId:String,
+    var ambulanceId:String,
+    var journeyStatus:String,
+)
+data class LocationUpdate (
+    var journeyStatus:String,
+    var currentLocation:List<LocationClass>,
+    var location:LocationClass
+    )
+
+
+
+data class GetLocationUpdateResponse (
+    var hasError:Boolean,
+    var locationUpdate:LocationUpdate
+)

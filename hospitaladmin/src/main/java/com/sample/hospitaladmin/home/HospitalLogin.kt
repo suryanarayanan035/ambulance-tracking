@@ -58,7 +58,7 @@ class HospitalLogin : AppCompatActivity() {
                         sharedPref.edit().putString(HOSPITALID_PREFS,hospitalId).commit()
 
                         withContext(Dispatchers.Main){
-                            val hospitalHomeIntent = Intent(binding.root.context,ListPendingRequestsHospital::class.java)
+                            val hospitalHomeIntent = Intent(binding.root.context,RequestDetailsActivity::class.java)
                             startActivity(hospitalHomeIntent)
                         }
 

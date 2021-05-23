@@ -2,6 +2,7 @@ package com.sample.hospitaladmin.home.models
 
 import android.graphics.Point
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 class Model {

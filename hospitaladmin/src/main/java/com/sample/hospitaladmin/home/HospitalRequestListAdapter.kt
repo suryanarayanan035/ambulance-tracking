@@ -23,9 +23,6 @@ class HospitalRequestListAdapter(private val requests:List<Request>): RecyclerVi
             requestId.visibility = View.GONE
         }
     }
-        override fun onClick(view:View) {
-          
-        }
 
     override fun getItemCount() = requests.size
 

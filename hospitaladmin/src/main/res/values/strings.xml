@@ -8,4 +8,5 @@
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false" tools:ignore="Typos">AIzaSyBZZsNlYDk0wG1JXwR25VsVKcj6ZDa55q0</string>
     <string name="name_hint">Enter your name</string>
     <string name="title_activity_home">Map</string>
+    <string name="title_activity_test">Map</string>
 </resources>

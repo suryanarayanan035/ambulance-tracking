@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val selectionScreenIntent = Intent(this,ListPendingRequestsHospital::class.java)
+        val selectionScreenIntent = Intent(this,Ambulance_Tracking_Activity::class.java)
         startActivity(selectionScreenIntent)
     }
 }
