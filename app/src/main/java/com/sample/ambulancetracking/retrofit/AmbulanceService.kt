@@ -18,4 +18,6 @@ interface AmbulanceService {
 
     @POST("ambulance/nearby-ambulances")
     suspend fun searchAmbulances(@Body payload: SearchPayload): SearchResponse
+
+
 }
