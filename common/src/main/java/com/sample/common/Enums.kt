@@ -1,9 +1,9 @@
 package com.sample.common
 
 enum class Gender(val gender: String) {
-    MALE("Male"),
-    FEMALE("Female"),
-    TRANSGENDER("Transgender"),
+    Male("Male"),
+    Female("Female"),
+    Transgender("Transgender"),
 }
 
 enum class BloodGroup(val blood: String) {

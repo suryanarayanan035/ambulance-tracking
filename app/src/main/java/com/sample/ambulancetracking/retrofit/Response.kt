@@ -33,3 +33,23 @@ data class SearchResponse(
 data class ActionResponse(
     val isValid: Boolean,
 )
+
+data class LocationUpdates (
+    val currentLocation:List<LocationResponse>,
+    val location:LocationResponse,
+    val journeyStatus:String,
+
+        )
+data class GetLocationUpdatesResponse (
+    val hasError:Boolean,
+    val locationUpdate:LocationUpdates,
+    val ambulance:AmbulanceResponse,
+
+        )
+
+data class AmbulanceResponse(
+    val driverName:String,
+    val driverMobile:String,
+    val vehicleNo: String,
+    val hospitalNo:String,
+)

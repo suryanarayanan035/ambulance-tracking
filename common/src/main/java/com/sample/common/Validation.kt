@@ -2,7 +2,7 @@ package com.sample.common
 
 import androidx.core.text.isDigitsOnly
 
-val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$")
+val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=.])(?=\\S+$).{4,}$")
 
 fun String.isPassword() = passwordRegex.find(this) != null
 
