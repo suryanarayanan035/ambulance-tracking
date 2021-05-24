@@ -44,3 +44,7 @@ data class SearchPayload(
     val district: String,
     val hospitalType: HospitalType,
 )
+
+data class GetRequestDetailsPayload (
+    val userId:String,
+        )

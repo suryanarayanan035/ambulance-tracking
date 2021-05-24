@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AmbulanceTracking"
         android:usesCleartextTraffic="true">
-        <activity android:name=".tracking.RequestActivity"></activity>
+        <activity android:name=".tracking.UserLocationTracking"></activity>
+        <activity android:name=".tracking.RequestActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

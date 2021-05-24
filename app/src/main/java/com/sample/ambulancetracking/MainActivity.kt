@@ -7,6 +7,7 @@ import com.sample.ambulancetracking.auth.AuthActivity
 import com.sample.ambulancetracking.databinding.ActivityMainBinding
 import com.sample.ambulancetracking.home.HomeActivity
 import com.sample.ambulancetracking.journey.JourneyActivity
+import com.sample.ambulancetracking.tracking.UserLocationTracking
 
 class MainActivity : AppCompatActivity() {
 

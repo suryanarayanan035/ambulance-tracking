@@ -96,6 +96,7 @@ class LoginFragment : Fragment() {
                         val homeIntent = Intent(requireContext(), HomeActivity::class.java)
                         startActivity(homeIntent)
                         requireActivity().finish()
+
                     }
 
                 } catch (e: Exception) {
