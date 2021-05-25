@@ -50,7 +50,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-    implementation files('C:\\Users\\surya\\Downloads\\heresdk-explore-android-4.7.3.0.5399\\heresdk-explore-android-4.7.3.0.5399\\heresdk-explore-android-4.7.3.0.5399.aar')
+    //implementation files('C:\\Users\\surya\\Downloads\\heresdk-explore-android-4.7.3.0.5399\\heresdk-explore-android-4.7.3.0.5399\\heresdk-explore-android-4.7.3.0.5399.aar')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

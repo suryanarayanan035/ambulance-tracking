@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -17,10 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.sample.ambulancetracking.BuildConfig
@@ -63,6 +60,10 @@ class JourneyActivity : AppCompatActivity() {
             false
         }
 
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
+    private var youLocation: LatLng? = null
+
     companion object {
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 701
         const val TAG = "HomeActivity"
@@ -103,6 +104,22 @@ class JourneyActivity : AppCompatActivity() {
         locationManager = ContextCompat.getSystemService(this, LocationManager::class.java)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 10000L
+            fastestInterval = 5000L
+        }
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                youLocation = locationResult.lastLocation.let {
+                    println(it.latitude)
+                    LatLng(it.latitude, it.longitude)
+                }
+
+            }
+        }
 
         if (!locationEnabled) {
             binding.root.snackbar(
@@ -132,10 +149,11 @@ class JourneyActivity : AppCompatActivity() {
         binding.button.setOnClickListener {
             val age = binding.ageInput.text.toString().trim()
             val bloodGroup = binding.bloodGroupInput.text.toString().trim()
-            val gender = binding.genderInput.text.toString().trim()
+            val gender = binding.genderInput.text.toString()
             val address = binding.addrLineInput.text.toString().trim()
             val district = binding.districtInput.text.toString().trim()
             val pincode = binding.pincodeInput.text.toString().trim()
+            println("$age, $bloodGroup, $gender, $address, $district, $pincode")
             val validated = validateUserPayload(
                 name = name,
                 mobile = phoneNumber,
@@ -147,7 +165,7 @@ class JourneyActivity : AppCompatActivity() {
                 pincode = pincode,
                 password = password
             )
-            if(!validated) {
+            if (!validated) {
                 binding.root.snackbar("Invalid format", "Dismiss")
                 return@setOnClickListener
             }
@@ -166,41 +184,39 @@ class JourneyActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             btnLoading()
-            fusedLocationClient.lastLocation.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val location: Location = task.result ?: run {
-                        btnIdle()
-                        startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                        return@addOnCompleteListener
-                    }
+            val location = youLocation
+            if (location != null) {
 
-                    val payload = RegisterPayload(
-                        user = UserPayload(
-                            name = name,
-                            mobile = phoneNumber,
-                            age = age.toInt(),
-                            gender = Gender.valueOf(gender),
-                            bloodGroup = BloodGroup.valueOf(bloodGroup),
-                            address = AddressPayload(
-                                street = address,
-                                district = district,
-                                pincode = pincode,
-                            ),
-                            location = LocationPayload(type = "Point", coordinates = listOf(location.latitude, location.longitude)),
-                            password = password,
-                        )
+                val payload = RegisterPayload(
+                    user = UserPayload(
+                        name = name,
+                        mobile = phoneNumber,
+                        age = age.toInt(),
+                        gender = Gender.valueOf(gender),
+                        bloodGroup = BloodGroup.valueOf(bloodGroup),
+                        address = AddressPayload(
+                            street = address,
+                            district = district,
+                            pincode = pincode,
+                        ),
+                        location = LocationPayload(
+                            type = "Point",
+                            coordinates = listOf(location.latitude, location.longitude)
+                        ),
+                        password = password,
                     )
-                    signup(payload)
+                )
+                signup(payload)
 
-                } else {
-                    btnIdle()
-                    binding.root.snackbar("Cannot retrieve location", "Dismiss")
-                }
-
+            } else {
+                btnIdle()
+                binding.root.snackbar("Location not found", "Request")
             }
 
         }
+
     }
+
 
     private fun btnLoading() {
         binding.button.isEnabled = false
@@ -318,6 +334,29 @@ class JourneyActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
             )
+        }
+        requestLocationUpdates()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        removeLocationUpdates()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestLocationUpdates() {
+        if (permissionAccepted) {
+            fusedLocationClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        }
+    }
+
+    private fun removeLocationUpdates() {
+        if (permissionAccepted) {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
         }
     }
 }
