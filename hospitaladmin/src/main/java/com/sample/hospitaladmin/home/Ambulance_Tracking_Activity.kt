@@ -1,31 +1,37 @@
 package com.sample.hospitaladmin.home
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.provider.Settings
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.sample.common.*
 import com.sample.hospitaladmin.R
 import com.sample.hospitaladmin.databinding.ActivityAmbulanceTrackingBinding
-import com.sample.hospitaladmin.home.models.UpdateJourneyDetails
-import com.sample.hospitaladmin.home.models.UpdateJourneyDetailsPayload
+import com.sample.hospitaladmin.home.models.*
 import com.sample.hospitaladmin.retrofit.HospitalService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
@@ -37,7 +43,11 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
         .build()
     private val hospitalService = retrofit.create(HospitalService::class.java)
     lateinit var binding: ActivityAmbulanceTrackingBinding
-    private lateinit var map: GoogleMap
+    lateinit var map: GoogleMap
+    private lateinit var fusedLocationClient:FusedLocationProviderClient
+    private lateinit var currentLocationMarker:Marker
+    private lateinit var destinationMarker:Marker
+    private lateinit var timer:CountDownTimer
     private val permissionAccepted: Boolean
         get() = ContextCompat.checkSelfPermission(
             this,
@@ -57,6 +67,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         binding = ActivityAmbulanceTrackingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.root.visibility = View.INVISIBLE
@@ -114,9 +125,6 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
             return "Arrived at location"
         }
         if (currentStep == "Arrived at location") {
-            return "Returning to hospital"
-        }
-        if (currentStep == "Returning to hospital") {
             return "Ride Completed"
         }
         return "";
@@ -155,9 +163,9 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                             locationUpdateResponse.locationUpdate.location.coordinates[0]
                         )
                         map.moveCamera(CameraUpdateFactory.zoomTo(15.0f))
-                        map.addMarker(MarkerOptions().position(currentLocationLatLng).title("You")
+                        currentLocationMarker=map.addMarker(MarkerOptions().position(currentLocationLatLng).title("You")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)))
-                        map.addMarker(MarkerOptions().position(victimLocationLatLng).title("Victim")
+                        destinationMarker=map.addMarker(MarkerOptions().position(victimLocationLatLng).title("Victim")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)))
                         map.addPolyline(
                             PolylineOptions().add(
@@ -175,7 +183,56 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                 e.printStackTrace()
             }
         }
+        timer = object: CountDownTimer(30000,1){
+            override fun onTick(millisUntilFinished: Long) {
+                print("Location log")
+            }
+            @SuppressLint("MissingPermission")
+            override fun onFinish() {
+                try {
+                    fusedLocationClient.getCurrentLocation(
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
+                        CancellationTokenSource().token
+                    ).addOnSuccessListener {currentLocation:Location->
+                        lifecycleScope.launch(Dispatchers.Main)
+                        {
+                            withContext(Dispatchers.IO) {
+                                val updatedLocation=LocationClass("Point",listOf(currentLocation.longitude,currentLocation.latitude))
+                                val locationPayload = UpdateLocationPayload(
+                                    UpdateLocationDetails(
+                                    "60a80bb3405a9a096d19c49d",updatedLocation))
+                                val locationUpdateResponse = hospitalService.updateLocation(locationPayload)
+                                if(!locationUpdateResponse.isUpdated)
+                                {
+                                    withContext(Dispatchers.Main)
+                                    {
+                                        binding.root.snackbar("Cannot update location", DISMISS)
+                                    }
+                                    return@withContext
+                                }
+                                currentLocationMarker.position= LatLng(currentLocation.longitude,currentLocation.latitude)
+                                withContext(Dispatchers.Main) {
+                                    binding.root.snackbar("Location updated", DISMISS)
+                                }
+                            }
+                        }
+
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    binding.root.snackbar("Exception occured", DISMISS)
+
+                }
+            }
+
+        }
+
+        timer.start()
+
     }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -193,5 +250,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
 
+
     }
 }
+

@@ -107,8 +107,17 @@ data class LocationUpdate (
     )
 
 
-
 data class GetLocationUpdateResponse (
     var hasError:Boolean,
     var locationUpdate:LocationUpdate
+)
+data class UpdateLocationDetails (
+    var requestId:String,
+    var location:LocationClass
+        )
+data class UpdateLocationPayload (
+   var locationUpdateDetails:UpdateLocationDetails
+        )
+data class UpdateLocationResponse(
+    var isUpdated:Boolean,
 )
