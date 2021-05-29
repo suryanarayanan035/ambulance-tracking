@@ -6,7 +6,13 @@ import android.os.Bundle
 import com.sample.ambulancetracking.auth.AuthActivity
 import com.sample.ambulancetracking.databinding.ActivityMainBinding
 import com.sample.ambulancetracking.home.HomeActivity
+import com.sample.ambulancetracking.home.HomeScreen
 import com.sample.ambulancetracking.journey.JourneyActivity
+import com.sample.ambulancetracking.journey.ListUserRequests
+import com.sample.ambulancetracking.journey.RequestBasicDetails
+import com.sample.ambulancetracking.journey.RequestLocationDetails
+import com.sample.ambulancetracking.search.ListAmbulancesActivitu
+import com.sample.ambulancetracking.search.SearchAmbulanceActivity
 import com.sample.ambulancetracking.tracking.UserLocationTracking
 
 class MainActivity : AppCompatActivity() {
@@ -17,17 +23,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.navigateToAuthBtn.setOnClickListener {
-            val authIntent = Intent(this, AuthActivity::class.java)
-            startActivity(authIntent)
-        }
-        binding.navigateToJourneyBtn.setOnClickListener {
-            val journeyIntent = Intent(this, JourneyActivity::class.java)
-            startActivity(journeyIntent)
-        }
-        binding.navigateToHomeBtn.setOnClickListener {
-            val homeIntent = Intent(this, HomeActivity::class.java)
-            startActivity(homeIntent)
-        }
+        val homeIntent = Intent(this,HomeScreen::class.java)
+        startActivity(homeIntent)
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -48,6 +49,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var currentLocationMarker:Marker
     private lateinit var destinationMarker:Marker
     private lateinit var timer:CountDownTimer
+    private lateinit var requestId:String
     private val permissionAccepted: Boolean
         get() = ContextCompat.checkSelfPermission(
             this,
@@ -60,6 +62,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
             false
         }
     private var locationManager: LocationManager? = null
+    private lateinit var sharedPref:SharedPreferences
 
     companion object {
         const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 701
@@ -68,6 +71,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        sharedPref = getSharedPreferences(HOSPITALADMIN_SECRET,Context.MODE_PRIVATE)
         binding = ActivityAmbulanceTrackingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.root.visibility = View.INVISIBLE
@@ -79,8 +83,8 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
             val currentStep = binding.journeyUpdateButton.text.toString()
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    val requestId = "60a80bb3405a9a096d19c49d"
-                    val ambulanceId = "9361213912"
+
+                    val ambulanceId = sharedPref.getString(AMBULANCEID_PREFS,"") as String
                     print("Current step$currentStep")
                     var nextStep = getNextStep(currentStep)
                     val updateJourneyStatusResponse = hospitalService.updateJourneyStatus(
@@ -96,7 +100,6 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                         withContext(Dispatchers.Main) {
                             binding.root.snackbar(_500, DISMISS)
                         }
-                        return@launch
                     } else {
                         withContext(Dispatchers.Main) {
                             if (nextStep == "") {
@@ -111,7 +114,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    return@launch
+
                 }
             }
         }
@@ -132,11 +135,10 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val requestId = "60a80bb3405a9a096d19c49d"
-        val ambulanceId = "9361213912"
+        val ambulanceId = sharedPref.getString(AMBULANCEID_PREFS,"") as String
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val locationUpdateResponse = hospitalService.getLocationUpdates(requestId)
+                val locationUpdateResponse = hospitalService.getLocationUpdatesByAmbulance(ambulanceId)
                 print(locationUpdateResponse)
                 if (locationUpdateResponse.hasError) {
 
@@ -145,9 +147,10 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                         binding.root.snackbar(_500, DISMISS)
 
                     }
-                    return@launch
+
                 } else {
                     val currentJourneyStatus = locationUpdateResponse.locationUpdate.journeyStatus
+                    requestId = locationUpdateResponse.locationUpdate._id
                     val nextStep = getNextStep(currentJourneyStatus)
                     withContext(Dispatchers.Main) {
                         binding.root.visibility = View.VISIBLE
@@ -162,7 +165,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                             locationUpdateResponse.locationUpdate.location.coordinates[1],
                             locationUpdateResponse.locationUpdate.location.coordinates[0]
                         )
-                        map.moveCamera(CameraUpdateFactory.zoomTo(15.0f))
+
                         currentLocationMarker=map.addMarker(MarkerOptions().position(currentLocationLatLng).title("You")
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)))
                         destinationMarker=map.addMarker(MarkerOptions().position(victimLocationLatLng).title("Victim")
@@ -173,10 +176,13 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                                 victimLocationLatLng
                             )
                         )
+                        map.moveCamera(CameraUpdateFactory.zoomTo(15.0f))
                         map.moveCamera(
                             CameraUpdateFactory.newLatLng(
                                 currentLocationLatLng
                             ))
+
+
                     }
                 }
             } catch (e: Exception) {
@@ -185,7 +191,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
         }
         timer = object: CountDownTimer(30000,1){
             override fun onTick(millisUntilFinished: Long) {
-                print("Location log")
+
             }
             @SuppressLint("MissingPermission")
             override fun onFinish() {
@@ -200,7 +206,7 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                                 val updatedLocation=LocationClass("Point",listOf(currentLocation.longitude,currentLocation.latitude))
                                 val locationPayload = UpdateLocationPayload(
                                     UpdateLocationDetails(
-                                    "60a80bb3405a9a096d19c49d",updatedLocation))
+                                    requestId,updatedLocation))
                                 val locationUpdateResponse = hospitalService.updateLocation(locationPayload)
                                 if(!locationUpdateResponse.isUpdated)
                                 {
@@ -208,12 +214,17 @@ class Ambulance_Tracking_Activity : AppCompatActivity(), OnMapReadyCallback {
                                     {
                                         binding.root.snackbar("Cannot update location", DISMISS)
                                     }
-                                    return@withContext
+
                                 }
-                                currentLocationMarker.position= LatLng(currentLocation.longitude,currentLocation.latitude)
-                                withContext(Dispatchers.Main) {
-                                    binding.root.snackbar("Location updated", DISMISS)
+                                else
+                                {
+                                    currentLocationMarker.position= LatLng(currentLocation.longitude,currentLocation.latitude)
+                                    map.moveCamera(CameraUpdateFactory.newLatLng(currentLocationMarker.position))
+                                    withContext(Dispatchers.Main) {
+                                        binding.root.snackbar("Location updated", DISMISS)
+                                    }
                                 }
+
                             }
                         }
 

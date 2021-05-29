@@ -13,7 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AmbulanceTracking"
         android:usesCleartextTraffic="true">
-        <activity android:name=".tracking.UserLocationTracking"></activity>
+        <activity android:name=".tracking.LocationActivity"></activity>
+        <activity android:name=".home.HomeScreen" />
+        <activity android:name=".search.SearchAmbulanceActivity" />
+        <activity android:name=".search.ListAmbulancesActivitu" />
+        <activity android:name=".journey.ListUserRequests" />
+        <activity android:name=".journey.RequestLocationDetails" />
+        <activity android:name=".journey.RequestBasicDetails" />
+        <activity android:name=".tracking.UserLocationTracking" />
         <activity android:name=".tracking.RequestActivity" />
 
         <meta-data

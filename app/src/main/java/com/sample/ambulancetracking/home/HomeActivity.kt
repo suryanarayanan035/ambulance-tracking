@@ -91,8 +91,8 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = 10000L
-            fastestInterval = 5000L
+            interval = 60000
+            fastestInterval = 5000
         }
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {

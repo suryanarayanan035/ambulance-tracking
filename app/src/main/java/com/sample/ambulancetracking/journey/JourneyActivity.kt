@@ -25,6 +25,7 @@ import com.sample.ambulancetracking.R
 import com.sample.ambulancetracking.auth.AuthActivity
 import com.sample.ambulancetracking.databinding.ActivityJourneyBinding
 import com.sample.ambulancetracking.home.HomeActivity
+import com.sample.ambulancetracking.home.HomeScreen
 import com.sample.ambulancetracking.retrofit.*
 import com.sample.common.*
 import kotlinx.coroutines.Dispatchers
@@ -159,7 +160,6 @@ class JourneyActivity : AppCompatActivity() {
                 mobile = phoneNumber,
                 age = age,
                 gender = gender,
-                bloodGroup = bloodGroup,
                 street = address,
                 district = district,
                 pincode = pincode,
@@ -193,7 +193,7 @@ class JourneyActivity : AppCompatActivity() {
                         mobile = phoneNumber,
                         age = age.toInt(),
                         gender = Gender.valueOf(gender),
-                        bloodGroup = BloodGroup.valueOf(bloodGroup),
+                        bloodGroup = bloodGroup,
                         address = AddressPayload(
                             street = address,
                             district = district,
@@ -231,7 +231,7 @@ class JourneyActivity : AppCompatActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val checkResponse = ambulanceService.check(phoneNumber)
-                if (!checkResponse.isUserExists) {
+                if (checkResponse.isUserExists) {
                     withContext(Dispatchers.Main) {
                         btnIdle()
                         val authIntent = Intent(this@JourneyActivity, AuthActivity::class.java)
@@ -251,19 +251,23 @@ class JourneyActivity : AppCompatActivity() {
                             "Dismiss",
                         )
                     }
-                    return@launch
+
+                }
+                else
+                {
+                    with(sharedPref.edit()) {
+                        putString(USERID_PREFS, checkResponse.user.mobile.trim())
+                        commit()
+                    }
+                    withContext(Dispatchers.Main) {
+                        btnIdle()
+                        val homeIntent = Intent(this@JourneyActivity, HomeScreen::class.java)
+                        startActivity(homeIntent)
+                        finish()
+                    }
                 }
 
-                with(sharedPref.edit()) {
-                    putString(USERID_PREFS, checkResponse.user.mobile.trim())
-                    commit()
-                }
-                withContext(Dispatchers.Main) {
-                    btnIdle()
-                    val homeIntent = Intent(this@JourneyActivity, HomeActivity::class.java)
-                    startActivity(homeIntent)
-                    finish()
-                }
+
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {

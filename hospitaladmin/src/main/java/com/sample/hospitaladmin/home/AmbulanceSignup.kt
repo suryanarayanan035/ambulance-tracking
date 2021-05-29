@@ -1,10 +1,14 @@
 package com.sample.hospitaladmin.home
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.sample.common.BASE_URL
+import com.sample.common.HOSPITALADMIN_SECRET
+import com.sample.common.HOSPITALID_PREFS
 import com.sample.common.snackbar
 import com.sample.hospitaladmin.databinding.ActivityAmbulanceHomeBinding
 import com.sample.hospitaladmin.databinding.ActivityAmbulanceSignupBinding
@@ -24,9 +28,11 @@ class AmbulanceSignup : AppCompatActivity() {
         .build()
     private val hospitalService = retrofit.create(HospitalService::class.java)
     private lateinit var binding:ActivityAmbulanceSignupBinding
+    private lateinit var sharedPrefs: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding  = ActivityAmbulanceSignupBinding.inflate(layoutInflater)
+        sharedPrefs = getSharedPreferences(HOSPITALADMIN_SECRET, Context.MODE_PRIVATE)
         setContentView(binding.root)
         binding.addAmbulanceButton.setOnClickListener{
             var driverName =binding.driverName.text.toString()
@@ -34,7 +40,7 @@ class AmbulanceSignup : AppCompatActivity() {
             var password = binding.password.text.toString()
             var isAvailable = binding.isAvailable.isChecked
             var vehicleNo = binding.vehicleNo.text.toString()
-            var hospital = "9361213912"
+            var hospital = sharedPrefs.getString(HOSPITALID_PREFS,"") as String
             var validationMessage = validateAmbulanceSignupDetails(driverName,driverMobile,password,vehicleNo)
 
             if(validationMessage == "")
@@ -43,13 +49,7 @@ class AmbulanceSignup : AppCompatActivity() {
                 val payload = AmbulanceSignupPayload(ambulance)
                 try {
                     lifecycleScope.launch(Dispatchers.IO){
-                        val ambulanceCheckResponse = hospitalService.checkAmbulanceIfExists(driverMobile)
-                        if(ambulanceCheckResponse.isAmbulanceExists)
-                        {
-                            withContext(Dispatchers.Main) {
-                                binding.root.snackbar("ambulance already registered with mobile no","DISMISS")
-                            }
-                        }
+
                         val ambulanceSignupResponse = hospitalService.signUpAmbulance(payload)
                         if(ambulanceSignupResponse.hasError)
                         {
@@ -60,8 +60,12 @@ class AmbulanceSignup : AppCompatActivity() {
                         }
                         else
                         {
-                                    val ambulanceHomeIntent = Intent(binding.root.context,Ambulance_Home::class.java)
-                                    startActivity(ambulanceHomeIntent)
+                            withContext(Dispatchers.Main)
+                            {
+                                val ambulanceHomeIntent =
+                                    Intent(binding.root.context, HospitalHomeScreen::class.java)
+                                startActivity(ambulanceHomeIntent)
+                            }
                         }
                     }
                 }

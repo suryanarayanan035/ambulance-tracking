@@ -18,6 +18,12 @@ interface AmbulanceService {
 
     @POST("ambulance/nearby-ambulances")
     suspend fun searchAmbulances(@Body payload: SearchPayload): SearchResponse
-    @GET("request-and-journey/location/{requestId}")
+    @GET("request-and-journey/location/user/{requestId}")
     suspend fun getLocationUpdates(@Path("requestId") requestId:String): GetLocationUpdatesResponse
+    @POST("request-and-journey")
+    suspend fun createRequestAndJourney(@Body requestJourneyDetails:RequestJourneyDetailsPayload): CreateRequestAndJourneyResponse
+    @GET("request-and-journey/user/{userId}")
+    suspend fun getRequestsByUser(@Path("userId") userId: String): GetRequestsByUserResposne
+    @POST("ambulance/nearby-ambulances")
+    suspend fun getNearbyAmbulances(@Body payload:GetNearbyambulancePayload): GetNearbyAmbulancesResponse
 }

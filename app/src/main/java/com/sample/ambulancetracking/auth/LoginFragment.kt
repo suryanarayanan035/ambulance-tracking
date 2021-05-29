@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.sample.ambulancetracking.R
 import com.sample.ambulancetracking.databinding.FragmentLoginBinding
 import com.sample.ambulancetracking.home.HomeActivity
+import com.sample.ambulancetracking.home.HomeScreen
 import com.sample.ambulancetracking.retrofit.AmbulanceService
 import com.sample.ambulancetracking.retrofit.LoginDetailsPayload
 import com.sample.ambulancetracking.retrofit.LoginPayload
@@ -89,11 +90,11 @@ class LoginFragment : Fragment() {
                     }
 
                     with(sharedPref.edit()) {
-                        putString(USERID_PREFS, checkResponse.user.mobile.trim())
+                        putString(USERID_PREFS, phoneNumber)
                         commit()
                     }
                     withContext(Dispatchers.Main) {
-                        val homeIntent = Intent(requireContext(), HomeActivity::class.java)
+                        val homeIntent = Intent(requireContext(), HomeScreen::class.java)
                         startActivity(homeIntent)
                         requireActivity().finish()
 

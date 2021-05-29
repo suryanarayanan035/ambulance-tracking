@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.sample.hospitaladmin.auth.AuthActivity
+import com.sample.hospitaladmin.auth.ChooseActivity
 import com.sample.hospitaladmin.databinding.ActivityMainBinding
 import com.sample.hospitaladmin.home.*
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val selectionScreenIntent = Intent(this,Ambulance_Tracking_Activity::class.java)
+        val selectionScreenIntent = Intent(this,SelectionScreen::class.java)
         startActivity(selectionScreenIntent)
     }
 }

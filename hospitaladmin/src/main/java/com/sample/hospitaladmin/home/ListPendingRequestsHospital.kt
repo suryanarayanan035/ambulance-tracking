@@ -47,17 +47,19 @@ class ListPendingRequestsHospital : AppCompatActivity() {
                         withContext(Dispatchers.Main)
                         {
                             binding.root.snackbar(_500, DISMISS)
+                            return@withContext
                         }
 
-                        return@launch
+                    }
+                    else
+                    {
+                        withContext(Dispatchers.Main) {
+                            binding.pendingRequestsRv.adapter =
+                                HospitalRequestListAdapter(requestsResponse.requests)
+                            binding.root.visibility=View.VISIBLE
+                        }
                     }
 
-                    withContext(Dispatchers.Main) {
-                        binding.pendingRequestsRv.adapter =
-                            HospitalRequestListAdapter(requestsResponse.requests)
-                        binding.root.visibility=View.VISIBLE
-
-                    }
 
                 } catch (e: Exception) {
 
@@ -66,7 +68,6 @@ class ListPendingRequestsHospital : AppCompatActivity() {
                     {
                         binding.root.snackbar(_500, DISMISS)
                     }
-                    return@launch
 
                 }
 

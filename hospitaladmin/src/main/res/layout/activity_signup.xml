@@ -10,11 +10,11 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="52dp"
         android:ems="10"
+        android:hint="Hospital Name"
         android:inputType="text"
-        android:text="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,11 +22,11 @@
         android:id="@+id/mobile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        android:layout_marginStart="108dp"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Mobile Number"
         android:inputType="numberDecimal"
-        android:text="Mobile Number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -34,11 +34,11 @@
         android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:text="password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mobile" />
 
@@ -46,8 +46,8 @@
         android:id="@+id/radioGroup"
         android:layout_width="267dp"
         android:layout_height="144dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password">
 
@@ -71,9 +71,11 @@
         android:id="@+id/proceedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="16dp"
         android:text="Proceed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 

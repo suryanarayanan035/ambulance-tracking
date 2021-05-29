@@ -2,18 +2,23 @@ package com.sample.ambulancetracking.tracking
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Looper
 import android.provider.Settings
+import android.renderscript.RenderScript
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withCreated
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,14 +28,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.snackbar.Snackbar
 import com.sample.ambulancetracking.R
 import com.sample.ambulancetracking.databinding.ActivityUserLocationTrackingBinding
 import com.sample.ambulancetracking.retrofit.AmbulanceService
-import com.sample.common.BASE_URL
-import com.sample.common.DISMISS
-import com.sample.common._500
-import com.sample.common.snackbar
+import com.sample.common.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,6 +60,7 @@ class UserLocationTracking : AppCompatActivity(), OnMapReadyCallback {
             false
         }
     private var locationManager: LocationManager? = null
+    private lateinit var sharedPref:SharedPreferences
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
@@ -68,10 +72,12 @@ class UserLocationTracking : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityUserLocationTrackingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.root.visibility = View.INVISIBLE
+        sharedPref=getSharedPreferences(USER_SECRET,Context.MODE_PRIVATE)
         val mapFragment =
             supportFragmentManager.findFragmentById(R.id.requestDetailsMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -140,10 +146,10 @@ class UserLocationTracking : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val requestId = "60a80bb3405a9a096d19c49d"
-        val ambulanceId = "9361213912"
+        val requestId = intent.getStringExtra("requestId") as String
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val locationUpdateResponse = service.getLocationUpdates(requestId)
@@ -159,6 +165,14 @@ class UserLocationTracking : AppCompatActivity(), OnMapReadyCallback {
                 } else {
                     val currentJourneyStatus = locationUpdateResponse.locationUpdate.journeyStatus
                     withContext(Dispatchers.Main) {
+                        val ambulanceResponse = locationUpdateResponse.ambulanceDetails
+                        binding.journeyStatusValue.text=locationUpdateResponse.locationUpdate.journeyStatus
+                        binding.requestStatusValue.text=locationUpdateResponse.locationUpdate.requestStatus
+                        binding.driverNameValue.text=ambulanceResponse.driverName
+                        binding.driverMobileValue.text=ambulanceResponse.driverMobile
+                        binding.hospitalMobileValue.text=ambulanceResponse.hospital
+                        binding.vehicleNoValue.text=ambulanceResponse.vehicleNo
+
                         binding.root.visibility = View.VISIBLE
                         val ambulanceLocationIndex =
                             locationUpdateResponse.locationUpdate.currentLocation.size - 1
@@ -171,53 +185,44 @@ class UserLocationTracking : AppCompatActivity(), OnMapReadyCallback {
                             locationUpdateResponse.locationUpdate.location.coordinates[0]
                         )
                         ambulanceLocation.value = currentLocationLatLng
+                        youLocation.value=victimLocationLatLng
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        removeLocationUpdates()
-    }
+        var timer = object:CountDownTimer(120000,1000) {
+            override fun onTick(millisUntilFinished: Long) {
 
-    override fun onStart() {
-        super.onStart()
+            }
 
-        if (!locationEnabled) {
-            Snackbar.make(binding.root, "Location is not enabled", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Enable") {
-                    startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                }.show()
+            override fun onFinish() {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    try {
+                        val locationUpdateResponse = service.getLocationUpdates(requestId)
+                        if(locationUpdateResponse.hasError)
+                        {
+                            binding.root.snackbar(_500, DISMISS)
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    catch(e:Exception) {
+
+                    }
+
+                }
+            }
+
         }
-        if (!permissionAccepted) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                UserLocationTracking.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-            )
-        }
-        requestLocationUpdates()
+
 
     }
 
-    @SuppressLint("MissingPermission")
-    private fun requestLocationUpdates() {
-        if (permissionAccepted) {
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                Looper.getMainLooper()
-            )
-        }
-    }
 
-    private fun removeLocationUpdates() {
-        if (permissionAccepted) {
-            fusedLocationClient.removeLocationUpdates(locationCallback)
-        }
-    }
 
 }

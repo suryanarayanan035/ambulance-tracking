@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.sample.common.BASE_URL
-import com.sample.common.HOSPITALADMIN_SECRET
-import com.sample.common.HOSPITALID_PREFS
-import com.sample.common.snackbar
+import com.sample.common.*
 import com.sample.hospitaladmin.databinding.ActivityHospitalLoginBinding
 import com.sample.hospitaladmin.home.models.HospitalLoginDetails
 import com.sample.hospitaladmin.home.models.HospitalLoginPayload
@@ -32,6 +29,7 @@ class HospitalLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHospitalLoginBinding.inflate(layoutInflater)
+        sharedPref = getSharedPreferences(HOSPITALADMIN_SECRET,Context.MODE_PRIVATE)
         setContentView(binding.root)
         binding.signUp.setOnClickListener{
             val signUpIntent = Intent(this,SignupActivity::class.java)
@@ -53,21 +51,22 @@ class HospitalLogin : AppCompatActivity() {
                             withContext(Dispatchers.Main) {
                                 binding.root.snackbar("Invalid username/password","DISMISS")
                             }
-                            return@launch
+
                         }
-                        sharedPref.edit().putString(HOSPITALID_PREFS,hospitalId).commit()
+                        else
+                        {
+                            sharedPref.edit().putString(HOSPITALID_PREFS,hospitalId).commit()
 
-                        withContext(Dispatchers.Main){
-                            val hospitalHomeIntent = Intent(binding.root.context,RequestDetailsActivity::class.java)
-                            startActivity(hospitalHomeIntent)
+                            withContext(Dispatchers.Main){
+                                val hospitalHomeIntent = Intent(binding.root.context, HospitalHomeScreen::class.java)
+                                startActivity(hospitalHomeIntent)
+                            }
                         }
-
-
                     }
                 }
                 catch(e:Exception) {
                     e.printStackTrace()
-                    binding.root.snackbar("Internal server error","DISMISS")
+                    binding.root.snackbar(_500,"DISMISS")
                 }
             }
             else
@@ -87,5 +86,17 @@ class HospitalLogin : AppCompatActivity() {
             return "password should be atleast 8 chars"
         }
         return ""
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val hospitalId = sharedPref.getString(HOSPITALID_PREFS,"")
+
+        if(!hospitalId.isNullOrBlank())
+        {
+            val hospitalHomeIntent = Intent(this,HospitalHomeScreen::class.java)
+            startActivity(hospitalHomeIntent)
+
+        }
     }
 }

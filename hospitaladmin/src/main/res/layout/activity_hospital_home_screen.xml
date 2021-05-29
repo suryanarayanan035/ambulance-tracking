@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF6F6"
+    tools:context=".home.HospitalHomeScreen">
+
+    <ImageButton
+        android:id="@+id/showRequestButton"
+        android:layout_width="222dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="52dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showRequestsText"
+        app:srcCompat="@drawable/requests" />
+
+    <TextView
+        android:id="@+id/showRequestsText"
+        android:layout_width="228dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="136dp"
+        android:text="Show Requests"
+        android:textAlignment="center"
+        android:textColor="#3F51B5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/createAmbulanceButton"
+        android:layout_width="216dp"
+        android:layout_height="182dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createAmbulanceText"
+        app:srcCompat="@drawable/craete_ambulance" />
+
+    <TextView
+        android:id="@+id/createAmbulanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="48dp"
+        android:text="Create Ambulance"
+        android:textColor="#3F51B5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showRequestButton" />
+
+    <Button
+        android:id="@+id/hospitalLogoutButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="297dp"
+        android:text="LOG OUT"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#E91E63" />
+</androidx.constraintlayout.widget.ConstraintLayout>

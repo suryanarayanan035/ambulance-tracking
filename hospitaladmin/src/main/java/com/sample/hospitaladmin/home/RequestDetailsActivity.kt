@@ -74,7 +74,7 @@ class RequestDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             supportFragmentManager.findFragmentById(R.id.requestDetailsMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
         locationManager = ContextCompat.getSystemService(this, LocationManager::class.java)
-        val requestId = "60a80bb3405a9a096d19c49d"
+        val requestId = intent.getStringExtra("requestId") as String
         binding.acceptButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
@@ -95,6 +95,7 @@ class RequestDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 ListPendingRequestsHospital::class.java
                             )
                             startActivity(listIntent)
+                            finish()
 
                         }
 
@@ -130,6 +131,7 @@ class RequestDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                                 ListPendingRequestsHospital::class.java
                             )
                             startActivity(listIntent)
+                            finish()
 
                         }
 
@@ -148,7 +150,7 @@ class RequestDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        val requestId = "60a80bb3405a9a096d19c49d"
+        val requestId = intent.getStringExtra("requestId") as String
         lifecycleScope.launch(Dispatchers.Main) {
             try {
                 var requestDetailsResponse: RequestDetailsResponse

@@ -14,7 +14,6 @@ fun String.isAge() = isDigitsOnly() && length in (1..3)
 
 fun String.isGender() = this in Gender.values().map { it.gender }
 
-fun String.isBloodGroup() = this in BloodGroup.values().map { it.blood }
 
 fun String.isStrong() = length > 5
 
@@ -25,7 +24,6 @@ fun validateUserPayload(
     mobile: String,
     age: String,
     gender: String,
-    bloodGroup: String,
     street: String,
     district: String,
     pincode: String,
@@ -35,7 +33,6 @@ fun validateUserPayload(
     mobile.isMobile(),
     age.isAge(),
     gender.isGender(),
-    bloodGroup.isBloodGroup(),
     street.isStrong(),
     district.isStrong(),
     pincode.isPincode(),

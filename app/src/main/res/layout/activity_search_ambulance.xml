@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search.SearchAmbulanceActivity">
+
+    <EditText
+        android:id="@+id/district"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="240dp"
+        android:ems="10"
+        android:hint="District"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="87dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="36dp"
+        android:text="Hospital Type"
+        android:textColor="#020202"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/district" />
+
+    <Button
+        android:id="@+id/searchAmbulanceButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:text="Search Ambulances"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hospitalTypeGroup" />
+
+    <RadioGroup
+        android:id="@+id/hospitalTypeGroup"
+        android:layout_width="141dp"
+        android:layout_height="159dp"
+        android:layout_marginStart="84dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13">
+
+        <RadioButton
+            android:id="@+id/governemntRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Government" />
+
+        <RadioButton
+            android:id="@+id/privateRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private" />
+
+        <RadioButton
+            android:id="@+id/allRadio"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:text="All" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

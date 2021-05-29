@@ -6,6 +6,8 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="#673AB7"
     android:baselineAligned="false"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
@@ -15,8 +17,8 @@
         android:id="@+id/accidentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="50dp"
         android:text="Accident"
         android:textColor="#090808"
         android:textSize="24sp"
@@ -27,9 +29,9 @@
         android:id="@+id/ageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="32dp"
-        android:text="age"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="48dp"
+        android:text="Age"
         android:textColor="#101010"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,8 +41,8 @@
         android:id="@+id/ageValuePendingRequests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="2dp"
         android:text="age"
         android:textColor="#090909"
         android:textSize="24sp"
@@ -51,12 +53,11 @@
         android:id="@+id/isAccidentValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="108dp"
         android:text="accident"
         android:textColor="#090909"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/ageText"
+        app:layout_constraintStart_toEndOf="@+id/ageValuePendingRequests"
         app:layout_constraintTop_toBottomOf="@+id/accidentText" />
 
     <TextView
@@ -66,5 +67,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="36dp"
+        android:background="#070707"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ageValuePendingRequests"></View>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

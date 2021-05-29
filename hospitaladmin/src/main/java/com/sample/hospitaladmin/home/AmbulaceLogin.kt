@@ -1,11 +1,12 @@
 package com.sample.hospitaladmin.home
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.sample.common.BASE_URL
-import com.sample.common.snackbar
+import com.sample.common.*
 import com.sample.hospitaladmin.R
 import com.sample.hospitaladmin.databinding.ActivityAmbulaceLoginBinding
 import com.sample.hospitaladmin.home.models.AmbulanceLoginDetails
@@ -25,10 +26,12 @@ class AmbulaceLogin : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val hospitalService = retrofit.create(HospitalService::class.java)
+    private lateinit var sharedPref:SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAmbulaceLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPref = getSharedPreferences(HOSPITALADMIN_SECRET, Context.MODE_PRIVATE)
         binding.ambulanceLoginButton.setOnClickListener{
             val ambulanceId = binding.ambulanceID.text.toString()
             val password = binding.password.text.toString()
@@ -46,6 +49,7 @@ class AmbulaceLogin : AppCompatActivity() {
                             }
                             return@launch
                         }
+                        sharedPref.edit().putString(AMBULANCEID_PREFS,ambulanceId).commit()
                         val ambulanceHomeIntent = Intent(binding.root.context,Ambulance_Home::class.java)
                         startActivity(ambulanceHomeIntent)
                     }
@@ -71,5 +75,16 @@ class AmbulaceLogin : AppCompatActivity() {
             return "password should be atleast 8 chars"
         }
         return ""
+    }
+    override fun onStart() {
+        super.onStart()
+        val ambulanceId = sharedPref.getString(AMBULANCEID_PREFS,"")
+
+        if(!ambulanceId.isNullOrBlank())
+        {
+            val hospitalHomeIntent = Intent(this,Ambulance_Home::class.java)
+            startActivity(hospitalHomeIntent)
+            return
+        }
     }
 }

@@ -103,7 +103,8 @@ data class UpdateJourneyDetails(
 data class LocationUpdate (
     var journeyStatus:String,
     var currentLocation:List<LocationClass>,
-    var location:LocationClass
+    var location:LocationClass,
+    var _id:String
     )
 
 
@@ -121,3 +122,8 @@ data class UpdateLocationPayload (
 data class UpdateLocationResponse(
     var isUpdated:Boolean,
 )
+
+data class GetRequestDetailsByAmbulanceResponse (
+    val hasError: Boolean,
+    val request:RequestDetailsResponse
+        )

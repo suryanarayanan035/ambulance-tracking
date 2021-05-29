@@ -27,6 +27,10 @@ interface HospitalService {
     suspend fun updateJourneyStatus(@Body updateJourneyDetailsPayload: UpdateJourneyDetailsPayload) : UpdateJourneyDetailsResponse
     @GET("request-and-journey/location/{requestId}")
     suspend fun getLocationUpdates(@Path("requestId") requestId:String) : GetLocationUpdateResponse
+    @GET("request-and-journey/location/ambulance/{ambulanceId}")
+    suspend fun getLocationUpdatesByAmbulance(@Path("ambulanceId") ambulanceId:String) : GetLocationUpdateResponse
     @PUT("request-and-journey/location/")
     suspend fun updateLocation(@Body updateLocationPayload:UpdateLocationPayload) : UpdateLocationResponse
+    @GET("request-and-journey/ambulance/{ambulanceId}")
+    suspend fun getRequestDetailsByAmbulance(@Path("ambulanceId") ambulanceId:String) : GetRequestDetailsByAmbulanceResponse
 }

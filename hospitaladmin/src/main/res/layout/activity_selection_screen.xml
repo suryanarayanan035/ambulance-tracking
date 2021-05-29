@@ -10,38 +10,61 @@
         android:id="@+id/hospitalseelectionScreenLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="310dp"
-        android:layout_marginEnd="276dp"
-        android:layout_marginBottom="402dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="89dp"
         android:fontFamily="sans-serif-medium"
         android:text="I am an"
         android:textColor="#050505"
         android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/hospitalAdminButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="31dp"
-        android:text="Hospital Admin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hospitalseelectionScreenLabel" />
-
-    <Button
+    <ImageButton
         android:id="@+id/ambulanceDriverButton"
+        android:layout_width="302dp"
+        android:layout_height="219dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="18dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hospitalseelectionScreenLabel"
+        app:srcCompat="@drawable/ambulance_banner" />
+
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="30dp"
-        android:text="Ambulance driver"
+        android:layout_marginStart="122dp"
+        android:layout_marginTop="8dp"
+        android:text="Ambulance Driver "
+        android:textColor="#121111"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ambulanceDriverButton" />
+
+    <ImageButton
+        android:id="@+id/hospitalAdminButton"
+        android:layout_width="292dp"
+        android:layout_height="240dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ambulanceDriverButton"
+        app:srcCompat="@drawable/hospital_banner" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="8dp"
+        android:text="Hospital Admin"
+        android:textColor="#0B0A0A"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hospitalAdminButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

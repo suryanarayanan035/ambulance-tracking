@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/isAccident"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F1F1"
+    tools:context=".journey.RequestBasicDetails">
+
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="98dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:text="Age"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <Spinner
+        android:id="@+id/bloodGroupSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="74dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:text="Set Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bloodGroupSpinner" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="72dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="218dp"
+        android:text="Gender"
+        android:textColor="#090909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/gender"
+        android:layout_width="178dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/age">
+
+        <RadioButton
+            android:id="@+id/maleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+
+        <RadioButton
+            android:id="@+id/femaleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+    </RadioGroup>
+
+    <Switch
+        android:id="@+id/isAccidentSwitch"
+        android:layout_width="159dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="127dp"
+        android:layout_marginTop="48dp"
+        android:text="is Accidnent?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bloodGroupSpinner" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

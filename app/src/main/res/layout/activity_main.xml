@@ -25,4 +25,10 @@
         android:layout_height="wrap_content"
         android:text="Navigate to Home Page" />
 
+    <Button
+        android:id="@+id/navigateToSearchAmbulanceBtn"
+        android:layout_width="282dp"
+        android:layout_height="wrap_content"
+        android:text="Search Ambulance" />
+
 </LinearLayout>

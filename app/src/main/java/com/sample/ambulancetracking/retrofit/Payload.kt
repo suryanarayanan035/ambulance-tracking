@@ -3,6 +3,8 @@ package com.sample.ambulancetracking.retrofit
 import com.sample.common.BloodGroup
 import com.sample.common.Gender
 import com.sample.common.HospitalType
+import java.io.Serializable
+import kotlin.properties.Delegates
 
 data class LoginPayload(
     val loginDetails: LoginDetailsPayload
@@ -22,7 +24,7 @@ data class UserPayload(
     val mobile: String,
     val age: Int,
     val gender: Gender,
-    val bloodGroup: BloodGroup,
+    val bloodGroup: String,
     val address: AddressPayload,
     val location: LocationPayload,
     val password: String,
@@ -47,4 +49,26 @@ data class SearchPayload(
 
 data class GetRequestDetailsPayload (
     val userId:String,
+        )
+
+class RequestJourneyDetails(name:String,age:Int,bloodGroup:String,gender:String,requestedBy:String,hospital:String,ambulance:String,isAccident:Boolean):Serializable {
+    public var name = name
+    public var age:Int = age
+    public var bloodGroup:String = bloodGroup
+    public var gender:String = gender
+    public var requestedBy:String = requestedBy
+    public var hospital:String = hospital
+    public var ambulance: String = ambulance
+    public var isAccident:Boolean = isAccident
+    public var location:LocationPayload? = null
+
+}
+
+data class RequestJourneyDetailsPayload (
+    var requestAndJourneyDetails: RequestJourneyDetails
+        )
+
+data class GetNearbyambulancePayload (
+    var district:String,
+    var type:String,
         )
