@@ -48,11 +48,11 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
         ) == PackageManager.PERMISSION_GRANTED
     private val locationEnabled: Boolean
         get() = try {
-            locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == true
+            locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER)
         } catch (e: Exception) {
             false
         }
-    private var locationManager: LocationManager? = null
+    private lateinit var locationManager: LocationManager
     private lateinit var currentLocationMarker: Marker
     private lateinit var victimLocationMarker: Marker
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -209,7 +209,7 @@ class LocationActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(authIntent)
         }
         if (!locationEnabled) {
-            Snackbar.make(binding.root, "Location is not enabled", Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(binding.root, "Location is not enabled", Snackbar.LENGTH_SHORT)
                 .setAction("Enable") {
                     startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
                 }.show()
