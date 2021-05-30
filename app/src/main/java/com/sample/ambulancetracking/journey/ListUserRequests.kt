@@ -38,6 +38,7 @@ class ListUserRequests : AppCompatActivity(){
         binding = ActivityListUserRequestsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sharedPref = getSharedPreferences(USER_SECRET, Context.MODE_PRIVATE)
+        val userId = sharedPref.getString(USERID_PREFS,"") as String
         linearLayoutManager = LinearLayoutManager(this)
         binding.userRequestRecyclerView.layoutManager = linearLayoutManager
         lifecycleScope.launch(Dispatchers.Main) {
@@ -45,7 +46,7 @@ class ListUserRequests : AppCompatActivity(){
                 lateinit var response: GetRequestsByUserResposne
                 withContext(Dispatchers.IO)
                 {
-                    response = service.getRequestsByUser("8428169669")
+                    response = service.getRequestsByUser(userId)
                 }
 
                 if (response.hasError) {
